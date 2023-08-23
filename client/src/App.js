@@ -14,6 +14,13 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from "redux-persist";
 import Logout from "./component/Logout";
 import UserProfile from "./component/Profile";
+import AdminNavBar from "./component/admin/header/navbar";
+import AdminHomePage from "./component/admin/Home";
+import AdminLogin from "./component/admin/login";
+import AdminLogout from "./component/admin/logout";
+import AdminUsersPage from "./component/admin/userMengement/AdminUsersPage";
+import Adduser from "./component/admin/userMengement/Adduser";
+import Action from "./component/admin/userMengement/Action";
 let persistor = persistStore(store);
 
 const Layout = () => {
@@ -22,6 +29,14 @@ const Layout = () => {
       <NavBar />
       <Outlet />
       <Footer />
+    </>
+  )
+}
+const AdminLayout = ()=>{
+  return (
+    <>
+      <AdminNavBar/>
+      <Outlet/>
     </>
   )
 }
@@ -49,6 +64,36 @@ const router = createBrowserRouter([
       {
         path:'/logout',
         element:<Logout/>
+      }
+    ]
+  },
+  {
+    path:'/admin',
+    element:<AdminLayout/>,
+    children:[
+      {
+        path:'/admin',
+        element:<AdminHomePage/>
+      },
+      {
+        path:'login',
+        element:<AdminLogin/>
+      },
+      {
+        path:'logout',
+        element:<AdminLogout/>
+      },
+      {
+        path:'users',
+        element:<AdminUsersPage/>,
+      },
+      {
+        path:'adduser',
+        element: <Adduser/>
+      },
+      {
+        path:'action/:id',
+        element: <Action/>
       }
     ]
   }

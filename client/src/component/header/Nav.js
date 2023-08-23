@@ -12,12 +12,15 @@ const NavBar = () => {
           My Website
         </Link>
         <div className="space-x-4">
+          <Link to="/" className="text-white hover:underline ">
+            Home
+          </Link>
           <Link to="/profile" className="text-white hover:underline ">
             Profile
           </Link>
           {success ?
             <Link to="/logout" className="text-white hover:underline">
-              logout
+              Logout
             </Link>
             :
             <Link to="/login" className="text-white hover:underline">

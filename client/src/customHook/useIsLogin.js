@@ -9,7 +9,7 @@ const useIsLogin = ()=>{
         if (auth.token){
             navigate('/');
         }
-    }, [auth.token]);
+    },[auth.token]);
 }
 
 export default useIsLogin;

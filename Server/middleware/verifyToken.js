@@ -1,15 +1,16 @@
 
-
 function VerifyToken(req, res, next){
     let authHeader = req.headers.authorization;
+    console.log(authHeader,'header da');
     if (!authHeader){
-        return res.jsom({message:"no token provided"});
+        return res.json({message:"no token provided"});
     }
         let token = authHeader.split(' ')[1];
+        console.log(token,'verify the token');
         const KEY = process.env.SECRECT_KEY;
         jwt.verify(token,KEY,(err, decoded)=>{
             if (err){
-                return res.jsom({message:"Authentication Failed"});
+                return res.json({message:"Authentication Failed"});
             }
             next()
         });
