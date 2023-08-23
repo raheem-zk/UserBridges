@@ -42,7 +42,52 @@ const Login = async (req, res)=>{
     }
 }
 
+const EditProfile = async (req, res)=>{
+    try {
+        const {username, email, phone,image, id} = req.body;
+        console.log(req.body);
+        await userModel.updateOne({_id: id}, {$set:{username, email, phone}})
+        .then((result)=>{
+            console.log(result);
+            return res.json({message:'success'});
+        })
+        .catch((err)=>{
+            return res.json({message:'error'});
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const Chengepassword = async (req, res)=>{
+    try {
+        const {currentPassword, newPassword, confirmNewPassword, id} = req.body;
+        console.log(req.body);
+        const userData = await userModel.findOne({_id: id});
+        console.log(userData);
+        if(!userData){
+            return res.json({message: 'server side error'});
+        }
+        const validateCurrentPassword = bcrypt.compareSync(currentPassword, userData.password);
+
+        if (!validateCurrentPassword) {
+            return res.json({ message: 'The current password is incorrect.' });
+        }
+        const hashPassword = await bcrypt.hash(newPassword, 10);
+        await userModel.updateOne({_id: id},{$set: {password: hashPassword}})
+        .then((result)=>{
+            return res.json({message:'success'});
+        })
+        .catch((err)=>{
+            return res.json({message: err});
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
 export {
     userRegister,
-    Login
+    Login,
+    EditProfile,
+    Chengepassword
 }

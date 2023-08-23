@@ -6,14 +6,12 @@ import { useEffect } from "react";
 
 
 function AdminLogout(){
-    useAdminIsLogin();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const dispatch = useDispatch()
+    dispatch(logout());
+    const navigate = useNavigate()
     useEffect(()=>{
-        dispatch(logout());
         navigate('/admin/login');
-    },[])
-    return null;
+    })
 }
 
 export default AdminLogout;

@@ -20,7 +20,10 @@ import AdminLogin from "./component/admin/login";
 import AdminLogout from "./component/admin/logout";
 import AdminUsersPage from "./component/admin/userMengement/AdminUsersPage";
 import Adduser from "./component/admin/userMengement/Adduser";
-import Action from "./component/admin/userMengement/Action";
+import Viewuserdetails from "./component/admin/userMengement/Viewuserdetails";
+import UserProfileEditPage from "./component/admin/userMengement/Edituser";
+import ChangePassword from "./component/user/ChangePassword";
+
 let persistor = persistStore(store);
 
 const Layout = () => {
@@ -92,8 +95,16 @@ const router = createBrowserRouter([
         element: <Adduser/>
       },
       {
-        path:'action/:id',
-        element: <Action/>
+        path:'viewuserdetails/:id',
+        element:< Viewuserdetails/>
+      },
+      {
+        path:'edituser/:id',
+        element: <UserProfileEditPage/>
+      },
+      {
+        path: 'editpassword/:id',
+        element: <ChangePassword/>
       }
     ]
   }

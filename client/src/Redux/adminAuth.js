@@ -16,6 +16,7 @@ const adminAuthSlice = createSlice({
             state.success = true;
         },
         logout: (state, action)=>{
+            console.log('logout')
             state.admin = {};
             state.token = null;
             state.success = false;

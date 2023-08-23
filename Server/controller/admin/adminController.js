@@ -33,19 +33,49 @@ const UsersData = async (req, res)=>{
 }
 
 const Action = async (req, res)=>{
-    const id = req.params.id;
-    console.log(req);
-    await userModel.updateOne({_id: id}, {$set: {status: false}})
+    const id = req.query.id;
+    const status = req.query.status;
+ 
+    console.log(id, status);
+    await userModel.updateOne({_id: id}, {$set: {status: status}})
     .then((result)=>{
         console.log(result);
-        res.json({result});
+        res.json({message:'success'});
     })
     .catch((error)=>{
         console.log(error);
     })
 }
+
+const DeleteUser = async (req, res)=>{
+    try {
+        const id = req.body.id;
+        console.log(id);
+        const result = await userModel.deleteOne({_id:id});
+        if (result.deletedCount === 1){
+            console.log(result);
+            return res.json({message:'User deleted successfully'});
+        }
+        console.log(result);
+
+        return res.json({message: 'An error occurred'});
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const Dashboard = async (req, res)=>{
+    const blockedUserCount = await userModel.countDocuments({status: false})
+    const userCount = await userModel.countDocuments({});
+    if (userCount || blockedUserCount){
+        res.json({blockedUserCount, userCount})
+    }
+}
+
 export {
     Login,
     UsersData,
-    Action
+    Action,
+    DeleteUser,
+    Dashboard
 }

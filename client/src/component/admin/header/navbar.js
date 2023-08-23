@@ -1,11 +1,13 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const AdminNavBar = () => {
+
   return (
     <nav className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-semibold">
+        <Link to="/admin" className="text-xl font-semibold">
           Admin Dashboard
         </Link>
         <ul className="flex space-x-4">

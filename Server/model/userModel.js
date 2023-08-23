@@ -21,6 +21,9 @@ const userSchema = mongoose.Schema(
         status:{
             type: Boolean,
             default: true,
+        },
+        image:{
+            type:String,
         }
     },
     { timestamps: true }

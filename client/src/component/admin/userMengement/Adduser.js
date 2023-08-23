@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAdminIsLogin from "../../../customHook/admin/adminIsLogin";
 function Adduser(){
+  useAdminIsLogin();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');

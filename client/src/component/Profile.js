@@ -14,7 +14,9 @@ const UserProfile = () => {
         <div className="bg-white shadow p-6 rounded-lg">
           <div className="bg-white shadow p-6 rounded-lg">
             <div className="flex items-center">
-              {image && <img className="w-16 h-16 rounded-full" src={URL.createObjectURL(image)} alt="posts" />}
+              {image ? <img className="w-20 h-20 rounded-full" src={URL.createObjectURL(image)} alt="posts" /> :
+              <img src="https://o2osell.com/oc/img/male_default_dp.png?1596813981" className="w-20 h-20 rounded-full" alt="" />
+              }
               <div className="ml-4">
                 <h2 className="text-xl font-semibold">{user?.username}</h2>
                 <input type="file" onChange={(e) => setImage(e.target?.files[0])} />

@@ -1,21 +1,61 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const INITTAL_STATE = {
-    users: {},
+    users: [],
+    FilterData: [],
+    userCount: 0,
+    blockedUserCount: 0,
 }
 const userSlice = createSlice({
-    name:'usersData',
+    name: 'usersData',
     initialState: INITTAL_STATE,
-    reducers:{
-        setUsersData: (state, action)=>{
+    reducers: {
+        setUsersData: (state, action) => {
             state.users = action.payload;
+            state.FilterData = action.payload;
         },
-        clearUserData:(state, action)=>{
+        clearUserData: (state, action) => {
             state.users = {}
+        },
+        UpdateUserData: (state, action) => {
+            const updates = state.users.map((user) => {
+                if (user._id === action.payload.id) {
+                    user.username = action.payload.username;
+                    user.email = action.payload.email;
+                    user.phone = action.payload.phone;
+                }
+                return user;
+            })
+            state.users = state.FilterData = updates;
+        },
+        ChangeAccess: (state, action) => {
+            const updates = state.users.map((user) => {
+                if (user._id === action.payload.id) {
+                    user.status = action.payload.status
+                }
+                return user;
+            })
+            state.users = state.FilterData = updates;
+        },
+        FilterUsers: (state, action) => {
+            const filterData = state.users.filter((user) => {
+                return user?.username.toLowerCase().match(action.payload.toLowerCase());
+            })
+            state.FilterData = filterData;
+        },
+        DeleteUser: (state, action) => {
+            const updates = state.users.filter((user) => {
+                return user._id !== action.payload;
+            })
+            state.users = state.FilterData = updates;
+        },
+        SetUserCount: (state, action) => {
+            state.userCount = action.payload.userCount;
+            state.blockedUserCount = action.payload.blockedUserCount;
         }
     }
 })
 
 
-export const { setUsersData , clearUserData} = userSlice.actions;
+export const { setUsersData, clearUserData, UpdateUserData, ChangeAccess, FilterUsers, DeleteUser, SetUserCount } = userSlice.actions;
 export default userSlice.reducer;
