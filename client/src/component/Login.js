@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { setUser } from "../Redux/userAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useIsLogin from "../customHook/useIsLogin";
 
 function Login(){
@@ -25,9 +25,14 @@ function Login(){
             .then((res)=>{
                 console.log(res);
                 if(res.data.message==='success'){
-                  alert(res.data.message)
-                  dispatch(setUser({user: res.data.userData, token:res.data.Token }))
-                  localStorage.setItem('user',res.data.Token)
+                  // alert(res.data.message)
+                  dispatch(setUser({user: res.data.userData, token:res.data.token }))
+                  const token = res.data.token;
+
+                  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                  
+                  console.log('token', token);
+                  localStorage.setItem('token', token);
                   navigate('/');
                 }else{
                   setErr(res.data.message);
@@ -88,6 +93,7 @@ function Login(){
                 >
                   Submit
                 </button>
+                <Link to="/signup" className="mt-3">Sign Up</Link>
               </div>
             </form>
           </div>

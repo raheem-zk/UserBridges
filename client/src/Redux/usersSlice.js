@@ -15,7 +15,7 @@ const userSlice = createSlice({
             state.FilterData = action.payload;
         },
         clearUserData: (state, action) => {
-            state.users = {}
+            state.users = FilterUsers = [];
         },
         UpdateUserData: (state, action) => {
             const updates = state.users.map((user) => {
@@ -23,6 +23,7 @@ const userSlice = createSlice({
                     user.username = action.payload.username;
                     user.email = action.payload.email;
                     user.phone = action.payload.phone;
+                    user.image = action.payload.image;
                 }
                 return user;
             })
@@ -52,10 +53,18 @@ const userSlice = createSlice({
         SetUserCount: (state, action) => {
             state.userCount = action.payload.userCount;
             state.blockedUserCount = action.payload.blockedUserCount;
-        }
+        },
     }
 })
 
 
-export const { setUsersData, clearUserData, UpdateUserData, ChangeAccess, FilterUsers, DeleteUser, SetUserCount } = userSlice.actions;
+export const { 
+    setUsersData, 
+    clearUserData, 
+    UpdateUserData, 
+    ChangeAccess, 
+    FilterUsers, 
+    DeleteUser, 
+    SetUserCount ,
+} = userSlice.actions;
 export default userSlice.reducer;

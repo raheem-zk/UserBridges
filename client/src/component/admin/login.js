@@ -27,8 +27,14 @@ function AdminLogin(){
             .then((res)=>{
               console.log(res.data.message);
               if (res.data.message==='success'){
-                dispatch(setAdmin({admin: res.data.adminData, token: res.data.Token}));
-                localStorage.setItem('admin',res.data.Token);
+                dispatch(setAdmin({admin: res.data.adminData, token: res.data.token}));
+                const token = res.data.token;
+
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                
+                console.log('token', token);
+
+                localStorage.setItem('admintoken', token);
                 alert(res.data.message);
                 navigate('/admin');
                 return;

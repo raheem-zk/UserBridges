@@ -30,13 +30,17 @@ const Login = async (req, res)=>{
         if (!userData){
             return res.json({message:'User is not found!'});
         }
+        if(userData.status===false){
+            return res.json({message:'User is Blocked'});
+        }
         const userValid = bcrypt.compareSync(password, userData.password);
         if(!userValid){
             return res.json({message:'password is wrong'});
         }
         const KEY = process.env.SECRECT_KEY;
-        const Token = jwt.sign({userId: userData._id }, KEY, {expiresIn: 9999777})
-        return res.json({message:'success', Token, userData});
+        // { user:email, role: 'user' }
+        const token = jwt.sign({ user:email, role: 'user' }, KEY, { expiresIn: '1h' })
+        return res.json({message:'success', token, userData});
     } catch (error) {
         console.log(error);
     }
@@ -44,12 +48,12 @@ const Login = async (req, res)=>{
 
 const EditProfile = async (req, res)=>{
     try {
-        const {username, email, phone,image, id} = req.body;
-        console.log(req.body);
-        await userModel.updateOne({_id: id}, {$set:{username, email, phone}})
+        const {username, email, phone, id} = req.body;
+        const image = req?.file ? req?.file?.filename : req?.body?.image;
+        await userModel.updateOne({_id: id}, {$set:{username, email, phone, image}})
         .then((result)=>{
             console.log(result);
-            return res.json({message:'success'});
+            return res.json({message:'success', image});
         })
         .catch((err)=>{
             return res.json({message:'error'});

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import useIsLogout from '../customHook/useIsLogout';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const UserProfile = () => {
   useIsLogout();
 
   const { user } = useSelector((state) => state?.auth);
-  const [image, setImage] = useState(null);
+  console.log(user);
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -14,12 +15,10 @@ const UserProfile = () => {
         <div className="bg-white shadow p-6 rounded-lg">
           <div className="bg-white shadow p-6 rounded-lg">
             <div className="flex items-center">
-              {image ? <img className="w-20 h-20 rounded-full" src={URL.createObjectURL(image)} alt="posts" /> :
-              <img src="https://o2osell.com/oc/img/male_default_dp.png?1596813981" className="w-20 h-20 rounded-full" alt="" />
-              }
+              {/* {image ? <img className="w-20 h-20 rounded-full" src={URL.createObjectURL(image)} alt="posts" /> : */}
+              <img className="w-20 h-20 rounded-full" src={'http://localhost:4000/images/'+user?.image} alt="posts" /> 
               <div className="ml-4">
                 <h2 className="text-xl font-semibold">{user?.username}</h2>
-                <input type="file" onChange={(e) => setImage(e.target?.files[0])} />
               </div>
             </div>
             <hr className="my-4" />
@@ -28,6 +27,11 @@ const UserProfile = () => {
               <p>Email: {user?.email}</p>
               <p>Phone: {user?.phone}</p>
             </div>
+            <div className="mt-4">
+            <Link to={`/edituser/${user?._id}`}><button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+              Edit Profile
+            </button></Link>
+          </div>
           </div>
         </div>
       </main>

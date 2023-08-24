@@ -24,6 +24,7 @@ const userSchema = mongoose.Schema(
         },
         image:{
             type:String,
+            default: '1692811427377-Screenshot (240).png'
         }
     },
     { timestamps: true }

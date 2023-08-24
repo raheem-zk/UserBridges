@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 const useIsLogin = ()=>{
-    const auth = useSelector((state)=> state.auth);
+    const {success} = useSelector((state)=> state.auth);
     const navigate = useNavigate();
     useEffect(()=>{
-        if (auth.token){
+        if (success){
             navigate('/');
         }
-    },[auth.token]);
+    });
 }
 
 export default useIsLogin;

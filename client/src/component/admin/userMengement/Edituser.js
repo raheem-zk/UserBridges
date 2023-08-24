@@ -5,40 +5,54 @@ import { Link, useLocation, useNavigate, useParams, useSearchParams } from "reac
 import { UpdateUserData } from "../../../Redux/usersSlice";
 import ChangePassword from "../../user/ChangePassword";
 import useAdminIsLogin from "../../../customHook/admin/adminIsLogin";
+import { UpdateData } from "../../../Redux/userAuth";
 
 
-function UserProfileEditPage() {
-  useAdminIsLogin();
+function UserProfileEditPage({ IsLogin }) {
+  IsLogin();
 
   const { id } = useParams()
   console.log(id);
   const { users } = useSelector((state) => state.users);
-  const userData = users.find((item) => item?._id === id);
+  const { user } = useSelector((state) => state.auth)
+  // const userData = users.length !== 0 ? users.find((item) => item?._id === id) : user;
+  const userData = user?._id === id ? user : users.find((item) => item?._id === id);
+
   const [username, setUsername] = useState(userData?.username);
   const [email, setEmail] = useState(userData?.email);
   const [phone, setPhone] = useState(userData?.phone);
-  const [image, setImage] = useState(userData?.image);
+  const [image, setImage] = useState(null);
   const [err, setErr] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [chengepassword, setChengepassword] = useState(false);
-  console.log(image)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (username === '' || email === '' || phone === '') {
       setErr('plese fill the fieald')
       return;
     }
-    if (phone.length !== 10) {
-      setErr('Plese enter curect phone number');
+    // if (phone.length != 10) {
+    //   setErr('Plese enter curect phone number');
+    //   return;
+    // }
+    if (phone.toString().length !== 10) {
+      setErr('Please enter a correct phone number');
       return;
     }
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('image', !image ? userData?.image : image);
+    formData.append('id', userData._id);
     try {
-      await axios.post('http://localhost:4000/userprofileedit', { username, email, phone, image, id: userData._id })
+      await axios.post('http://localhost:4000/userprofileedit', formData)
         .then((result) => {
           console.log(result);
           if (result.data.message === 'success') {
-            dispatch(UpdateUserData({ username, email, phone, id: userData._id }))
+            dispatch(UpdateData({ username, email, phone, image: result.data.image }))
+            dispatch(UpdateUserData({ username, email, phone, image: result.data.image, id: userData._id }))
             navigate(-1);
             return;
           }
@@ -90,7 +104,7 @@ function UserProfileEditPage() {
                 Phone
               </label>
               <input
-                type="tel"
+                type="number"
                 id="phone"
                 name="phone"
                 value={phone}
@@ -103,13 +117,9 @@ function UserProfileEditPage() {
               {image ? (
                 <img className="w-20 h-20 rounded-full" src={URL.createObjectURL(image)} alt="posts" />
               ) : (
-                <img
-                  src="https://o2osell.com/oc/img/male_default_dp.png?1596813981"
-                  className="my-5 w-20 h-20 rounded-full"
-                  alt=""
-                />
+                <img className="w-20 h-20 rounded-full" src={'http://localhost:4000/images/' + userData?.image} alt="posts" />
               )}
-                <input type="file" className="py-5" onChange={(e) => setImage(e.target?.files[0])} />
+              <input type="file" className="py-5" onChange={(e) => setImage(e.target?.files[0])} />
             </div>
             <p className={`text-red-700 ${err ? '' : 'hidden'}`}>{err}</p>
             <button

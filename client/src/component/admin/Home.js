@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import useAdminIsLogin from '../../customHook/admin/adminIsLogin';
 import { SetUserCount } from '../../Redux/usersSlice';
+import { logout } from "../../Redux/adminAuth";
+
 import axios from 'axios';
 const AdminHomePage = () => {
     useAdminIsLogin();
@@ -16,6 +18,10 @@ const AdminHomePage = () => {
         await axios.get(`http://localhost:4000/admin`)
         .then((res)=>{
           dispatch(SetUserCount({blockedUserCount: res.data.blockedUserCount,userCount: res.data.userCount }))
+        })
+        .catch((err)=>{
+          dispatch(logout());
+          console.log(err);
         })
       } catch (error) {
         console.log(error);

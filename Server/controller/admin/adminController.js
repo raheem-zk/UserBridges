@@ -16,8 +16,8 @@ const Login = async (req, res)=>{
             return res.json({message:'Invalid password. Please try again.'})
         }
         const KEY = process.env.SECRECT_KEY;
-        const Token = jwt.sign({adminId: adminData._id }, KEY, {expiresIn: 9999777})
-        return res.json({message:'success', Token, adminData});
+        const token = jwt.sign({ user:email, role: 'admin' }, KEY, {expiresIn: '1h'});
+        return res.json({message:'success', token, adminData});
     } catch (error) {
         console.log(error, 'admin login error');
     }
@@ -25,6 +25,7 @@ const Login = async (req, res)=>{
 
 const UsersData = async (req, res)=>{
     try {
+        console.log(req.headers);
         const usersData = await userModel.find({});
         res.json({usersData});
     } catch (error) {

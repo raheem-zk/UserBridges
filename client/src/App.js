@@ -23,6 +23,8 @@ import Adduser from "./component/admin/userMengement/Adduser";
 import Viewuserdetails from "./component/admin/userMengement/Viewuserdetails";
 import UserProfileEditPage from "./component/admin/userMengement/Edituser";
 import ChangePassword from "./component/user/ChangePassword";
+import useAdminIsLogin from "./customHook/admin/adminIsLogin";
+import useIsLogout from "./customHook/useIsLogout";
 
 let persistor = persistStore(store);
 
@@ -67,7 +69,11 @@ const router = createBrowserRouter([
       {
         path:'/logout',
         element:<Logout/>
-      }
+      },
+      {
+        path:'edituser/:id',
+        element: <UserProfileEditPage IsLogin={useIsLogout}/>
+      },
     ]
   },
   {
@@ -100,7 +106,7 @@ const router = createBrowserRouter([
       },
       {
         path:'edituser/:id',
-        element: <UserProfileEditPage/>
+        element: <UserProfileEditPage IsLogin={useAdminIsLogin}/>
       },
       {
         path: 'editpassword/:id',

@@ -9,10 +9,12 @@ function Logout() {
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-      dispatch(logout()); 
       localStorage.removeItem('user');
       navigate('/login'); 
-  }, []);
+      return ()=>{
+        dispatch(logout()); 
+      }
+  });
 
   return null; 
 }
